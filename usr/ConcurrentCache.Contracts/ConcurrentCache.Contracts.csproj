@@ -40,7 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\ISerializer.cs" />
     <Compile Include="Def\ICache.cs" />
+    <Compile Include="Def\ICacheData.cs" />
     <Compile Include="Def\ICachePair.cs" />
     <Compile Include="Error\CacheErrorCode.cs" />
     <Compile Include="Error\ConcurrentCacheException.cs" />
