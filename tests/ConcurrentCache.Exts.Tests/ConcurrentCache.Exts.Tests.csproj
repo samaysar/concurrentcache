@@ -3,12 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F6668DD1-677D-4D09-AA10-EE37AFADB127}</ProjectGuid>
+    <ProjectGuid>{B8D52C73-7D23-4609-BE88-6E8C7A2994BF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ConcurrentCache.Contracts.Tests</RootNamespace>
-    <AssemblyName>ConcurrentCache.Contracts.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <RootNamespace>ConcurrentCache.Exts.Tests</RootNamespace>
+    <AssemblyName>ConcurrentCache.Exts.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -50,13 +50,13 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Error\ConcurrentCacheExceptionTest.cs" />
+    <Compile Include="JsonSerializationExtTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\usr\ConcurrentCache.Contracts\ConcurrentCache.Contracts.csproj">
-      <Project>{5e767770-d908-4cb5-a9c8-1f504c781213}</Project>
-      <Name>ConcurrentCache.Contracts</Name>
+    <ProjectReference Include="..\..\etc\ConcurrentCache.Exts\ConcurrentCache.Exts.csproj">
+      <Project>{198ac219-c3ce-44f1-b0c4-a4ef7a8ffa28}</Project>
+      <Name>ConcurrentCache.Exts</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

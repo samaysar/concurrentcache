@@ -47,6 +47,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serializers\Json\JsonFileSerializer.cs" />
     <Compile Include="Serializers\Json\JsonStreamSerializer.cs" />
+    <Compile Include="Serializers\Xml\XmlFileSerializer.cs" />
+    <Compile Include="Serializers\Xml\XmlStreamSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -61,9 +63,7 @@
       <Name>ConcurrentCache.Exts</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Serializers\Xml\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

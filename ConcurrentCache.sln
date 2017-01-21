@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D5865D2F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConcurrentCache.Contracts.Tests", "tests\ConcurrentCache.Contracts.Tests\ConcurrentCache.Contracts.Tests.csproj", "{F6668DD1-677D-4D09-AA10-EE37AFADB127}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConcurrentCache.Exts.Tests", "tests\ConcurrentCache.Exts.Tests\ConcurrentCache.Exts.Tests.csproj", "{B8D52C73-7D23-4609-BE88-6E8C7A2994BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{F6668DD1-677D-4D09-AA10-EE37AFADB127}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6668DD1-677D-4D09-AA10-EE37AFADB127}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6668DD1-677D-4D09-AA10-EE37AFADB127}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8D52C73-7D23-4609-BE88-6E8C7A2994BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8D52C73-7D23-4609-BE88-6E8C7A2994BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8D52C73-7D23-4609-BE88-6E8C7A2994BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8D52C73-7D23-4609-BE88-6E8C7A2994BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,5 +60,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C13DCE80-9C20-4D1F-9656-6A4E69B336E7} = {D5865D2F-177C-4E1B-92A7-9824F242CD7D}
 		{F6668DD1-677D-4D09-AA10-EE37AFADB127} = {D5865D2F-177C-4E1B-92A7-9824F242CD7D}
+		{B8D52C73-7D23-4609-BE88-6E8C7A2994BF} = {D5865D2F-177C-4E1B-92A7-9824F242CD7D}
 	EndGlobalSection
 EndGlobal

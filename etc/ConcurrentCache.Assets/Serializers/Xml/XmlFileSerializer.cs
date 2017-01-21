@@ -1,22 +1,27 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
+using ConcurrentCache.Assets.Serializers.Json;
 using ConcurrentCache.Contracts.Assets;
 using ConcurrentCache.Exts;
 
-namespace ConcurrentCache.Assets.Serializers.Json
+namespace ConcurrentCache.Assets.Serializers.Xml
 {
-    public class JsonFileSerializer<T> : ISerializer<T>
+    public class XmlFileSerializer<T> : ISerializer<T>
     {
         private readonly string _fileFullPath;
+        private readonly IEnumerable<Type> _knownTypes;
         private readonly bool _useCompression;
         private readonly CompressionScheme _scheme;
         private readonly CompressionLevel _level;
 
-        public JsonFileSerializer(string fileFullPath, bool useCompression = true,
+        public XmlFileSerializer(string fileFullPath, IEnumerable<Type> knownTypes, bool useCompression = true,
             CompressionScheme scheme = CompressionScheme.Deflate, CompressionLevel level = CompressionLevel.Optimal)
         {
             _fileFullPath = fileFullPath;
+            _knownTypes = knownTypes;
             _useCompression = useCompression;
             _scheme = scheme;
             _level = level;
@@ -29,7 +34,7 @@ namespace ConcurrentCache.Assets.Serializers.Json
                     1024, FileOptions.Asynchronous))
             {
                 await
-                    new JsonStreamSerializer<T>(fileStream, _useCompression, _scheme, _level).SerializeAsync(obj)
+                    new XmlStreamSerializer<T>(fileStream, _knownTypes, _useCompression, _scheme, _level).SerializeAsync(obj)
                         .ConfigureAwait(false);
                 fileStream.Flush(true);
             }
@@ -43,7 +48,7 @@ namespace ConcurrentCache.Assets.Serializers.Json
             {
                 return
                     await
-                        new JsonStreamSerializer<T>(fileStream, _useCompression, _scheme, _level).DeserializeAsync()
+                        new XmlStreamSerializer<T>(fileStream, _knownTypes, _useCompression, _scheme, _level).DeserializeAsync()
                             .ConfigureAwait(false);
             }
         }
