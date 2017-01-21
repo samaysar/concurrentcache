@@ -37,8 +37,10 @@ namespace ConcurrentCache.Contracts.Tests.Error
         public void Ctor_Passes_Inner_Exception_Down_The_Lane()
         {
             var err = new Exception();
-            Assert.True(
-                new ConcurrentCacheException(CacheErrorCode.UnitTestRelated, "anything", err).InnerException.Equals(err));
+            var innerException =
+                new ConcurrentCacheException(CacheErrorCode.UnitTestRelated, "anything", err).InnerException;
+            Assert.NotNull(innerException);
+            Assert.True(innerException.Equals(err));
         }
     }
 }

@@ -1,37 +1,32 @@
 ﻿using System.Globalization;
 using System.IO;
 using System.IO.Compression;
+using System.Runtime.Serialization.Formatters;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace ConcurrentCache.Exts
 {
-    public enum CompressionScheme
-    {
-        Deflate = 0,
-        GZip
-    }
-
     public static class JsonSerializationExt
     {
-        public static Task SerializeAsync<T>(this T obj, Stream outputStream, bool compress = true,
+        public static Task SerializeJsonAsync<T>(this T obj, Stream outputStream, bool compress = true,
             CompressionScheme scheme = CompressionScheme.Deflate, CompressionLevel level = CompressionLevel.Optimal)
         {
-            return compress ? obj.ToCompressedJson(outputStream, scheme, level) : obj.ToJson(outputStream);
+            return compress ? obj.ToCompressedJsonAsync(outputStream, scheme, level) : obj.ToJsonAsync(outputStream);
         }
 
-        public static Task<T> DeserializeAsync<T>(this Stream inputStream, bool compressed = true,
+        public static Task<T> DeserializeJsonAsync<T>(this Stream inputStream, bool compressed = true,
             CompressionScheme scheme = CompressionScheme.Deflate)
         {
             return Task.FromResult(compressed ? inputStream.FromCompressedJson<T>(scheme) : inputStream.FromJson<T>());
         }
 
-        public static async Task ToJson<T>(this T obj, Stream outputStream)
+        public static async Task ToJsonAsync<T>(this T obj, Stream outputStream)
         {
             using (var streamWriter = new StreamWriter(outputStream, Encoding.UTF8, 1024, true) {AutoFlush = true})
             {
-                await obj.ToJson(streamWriter).ConfigureAwait(false);
+                await obj.ToJsonAsync(streamWriter).ConfigureAwait(false);
                 await streamWriter.FlushAsync().ConfigureAwait(false);
                 await outputStream.FlushAsync().ConfigureAwait(false);
             }
@@ -45,7 +40,7 @@ namespace ConcurrentCache.Exts
             }
         }
 
-        public static async Task ToCompressedJson<T>(this T obj, Stream compressedOutputStream,
+        public static async Task ToCompressedJsonAsync<T>(this T obj, Stream compressedOutputStream,
             CompressionScheme scheme = CompressionScheme.Deflate, CompressionLevel level = CompressionLevel.Optimal)
         {
             var compressor = scheme == CompressionScheme.Deflate
@@ -55,7 +50,7 @@ namespace ConcurrentCache.Exts
             {
                 using (var streamWriter = new StreamWriter(compressor, Encoding.UTF8, 1024, true) {AutoFlush = true})
                 {
-                    await obj.ToJson(streamWriter).ConfigureAwait(false);
+                    await obj.ToJsonAsync(streamWriter).ConfigureAwait(false);
                     await streamWriter.FlushAsync().ConfigureAwait(false);
                     await compressor.FlushAsync().ConfigureAwait(false);
                     await compressedOutputStream.FlushAsync().ConfigureAwait(false);
@@ -78,31 +73,33 @@ namespace ConcurrentCache.Exts
             }
         }
 
-        public static async Task ToJson<T>(this T obj, StreamWriter streamWriter)
+        public static async Task ToJsonAsync<T>(this T obj, StreamWriter streamWriter)
         {
             streamWriter.AutoFlush = true;
             using (var jsonWriter = new JsonTextWriter(streamWriter)
             {
                 CloseOutput = false,
                 Culture = CultureInfo.CurrentCulture,
-                DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
+                DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 Formatting = Formatting.None,
-                DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind
+                DateTimeZoneHandling = DateTimeZoneHandling.Utc
             })
             {
                 var serializer = new JsonSerializer
                 {
-                    DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
+                    DateFormatHandling = DateFormatHandling.IsoDateFormat,
                     Formatting = Formatting.None,
                     DefaultValueHandling = DefaultValueHandling.Ignore,
-                    ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-                    PreserveReferencesHandling = PreserveReferencesHandling.All,
+                    ReferenceLoopHandling = ReferenceLoopHandling.Error,
+                    PreserveReferencesHandling = PreserveReferencesHandling.None,
                     Culture = CultureInfo.CurrentCulture,
                     TypeNameHandling = TypeNameHandling.Auto,
                     MissingMemberHandling = MissingMemberHandling.Ignore,
-                    DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind
+                    DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+                    NullValueHandling = NullValueHandling.Ignore,
+                    TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
                 };
-                serializer.Serialize(jsonWriter, obj);
+                serializer.Serialize(jsonWriter, obj, obj.GetType());
                 jsonWriter.Flush();
                 await streamWriter.FlushAsync().ConfigureAwait(false);
             }
@@ -114,21 +111,22 @@ namespace ConcurrentCache.Exts
             {
                 Culture = CultureInfo.CurrentCulture,
                 CloseInput = false,
-                DateParseHandling = DateParseHandling.DateTime,
-                DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind
+                DateTimeZoneHandling = DateTimeZoneHandling.Utc
             })
             {
                 var serializer = new JsonSerializer
                 {
-                    DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
+                    DateFormatHandling = DateFormatHandling.IsoDateFormat,
                     Formatting = Formatting.None,
                     DefaultValueHandling = DefaultValueHandling.Ignore,
-                    ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-                    PreserveReferencesHandling = PreserveReferencesHandling.All,
+                    ReferenceLoopHandling = ReferenceLoopHandling.Error,
+                    PreserveReferencesHandling = PreserveReferencesHandling.None,
                     Culture = CultureInfo.CurrentCulture,
                     TypeNameHandling = TypeNameHandling.Auto,
                     MissingMemberHandling = MissingMemberHandling.Ignore,
-                    DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind
+                    DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+                    NullValueHandling = NullValueHandling.Ignore,
+                    TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
                 };
                 return serializer.Deserialize<T>(jsonReader);
             }
