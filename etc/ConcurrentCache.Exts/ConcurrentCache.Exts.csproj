@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,8 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompressionScheme.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="JsonSerializationExt.cs" />
+    <Compile Include="XmlSerializationExt.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

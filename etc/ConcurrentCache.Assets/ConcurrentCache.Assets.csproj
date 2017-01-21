@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serializers\Json\JsonFileSerializer.cs" />
+    <Compile Include="Serializers\Json\JsonStreamSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -59,6 +60,9 @@
       <Project>{198ac219-c3ce-44f1-b0c4-a4ef7a8ffa28}</Project>
       <Name>ConcurrentCache.Exts</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Serializers\Xml\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
