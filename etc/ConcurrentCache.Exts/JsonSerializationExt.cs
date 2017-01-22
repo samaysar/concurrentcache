@@ -19,7 +19,7 @@ namespace ConcurrentCache.Exts
         public static Task<T> DeserializeJsonAsync<T>(this Stream inputStream, bool compressed = true,
             CompressionScheme scheme = CompressionScheme.Deflate)
         {
-            return Task.FromResult(compressed ? inputStream.FromCompressedJson<T>(scheme) : inputStream.FromJson<T>());
+            return Task.Run(() => compressed?inputStream.FromCompressedJson<T>(scheme):inputStream.FromJson<T>());
         }
 
         public static async Task ToJsonAsync<T>(this T obj, Stream outputStream)
