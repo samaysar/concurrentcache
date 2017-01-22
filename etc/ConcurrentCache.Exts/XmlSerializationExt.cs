@@ -24,9 +24,11 @@ namespace ConcurrentCache.Exts
             bool compressed = true, CompressionScheme scheme = CompressionScheme.Deflate)
         {
             return
-                Task.FromResult(compressed
-                    ?inputStream.FromCompressedXml<T>(knownTypes, scheme)
-                    :inputStream.FromXml<T>(knownTypes));
+                Task.Run(
+                    () =>
+                        compressed
+                            ?inputStream.FromCompressedXml<T>(knownTypes, scheme)
+                            :inputStream.FromXml<T>(knownTypes));
         }
 
         public static async Task ToXmlAsync<T>(this T obj, Stream outputStream, IEnumerable<Type> knownTypes)
